@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎我亲爱的无产阶级工人同志</title>
+    <link rel="stylesheet" type="text/css" href="test.css">
+    <script type="text/javascript" src="test.js"></script>
+</head>
+<body style="background-color: black">
+
+<button id = "test_button" onclick="button()">123</button>
+<p id="demo" style="color: white">""</p>
+
+<!--    页眉设置-->
+    <h2 id="header">欢迎我亲爱的无产阶级工人同志</h2>
+
+<div id="main">
+
+    <div id="module_one">
+        <p id="module1_sign">点击这里切换歌曲</p>
+        <div id="song_links">
+            <ul>
+                <li><a href="../开工/music/周杰伦%20-%20花海.mp3">花海-周杰伦</a></li>
+                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
+                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
+                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
+                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
+                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
+                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
+                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
+                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
+                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
+                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
+
+            </ul>
+        </div>
+    </div>
+
+
+    <div id="module_two">
+        <div id="player">
+            <audio id="audio" controls preload="auto" style="display: none" ontimeupdate="nowtime(this)" >
+                <source src="music/周杰伦%20-%20花海.mp3">
+                <source src="music/周杰伦%20-%20花海.ogg">
+            </audio>
+
+            <img src="player_image/图层%20背景.png" id="image_background">
+            <img src="music_picture/花海-周杰伦.jpg" id="image_music">
+
+        </div>
+
+        <div id="all_botton">
+            <div id="botton_top">
+                <img src="player_image/previous.png" id="previous" onclick="previous()" alt="这是">
+<!--                <button style="visibility: hidden" id="pause_play"><img src="player_image/play.png" style="visibility: visible;width: 140px;height: 170px;"></button>-->
+                <img src="player_image/pause.png" id="pause_play" onclick="main_button()">
+                <img src="player_image/next.png" id="next" onclick="next()">
+            </div>
+
+            <div id="botton_bottom">
+                <img src="player_image/repeat.png" class="botton_bottom" id="repeat" onclick="repeat()">
+                <img src="player_image/volume-up.png" class="botton_bottom" onclick="volume()" id="volume">
+                <a href="https://www.bilibili.com/video/BV1Gq4y1s7rK?from=search&seid=1519251411561099364&spm_id_from=333.337.0.0" target="_blank"><img src="player_image/link.png" id="link"></a>
+                <img src="player_image/love.png" class="botton_bottom" onclick="love_button()" id="love_button">
+            </div>
+            <div style="height: 80px;">
+                <p id="player_song_name">当前播放：花海-周杰伦</p>
+            </div>
+        </div>
+
+        <div id="player_line_box">
+
+            <div id="player_line">
+                <div id="playhead"></div>
+            </div>
+            <div style="width: 590px;height: 25px;margin-top: 5px">
+                <p id="now_time">0:00</p>
+                <p id="total_time"></p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <div id="module_three">
+        <div id="module3_sign">花海-周杰伦</div>
+        <div id="song_words">
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+            <p>这是一段文字</p>
+
+        </div>
+    </div>
+
+</body>
+</html>
