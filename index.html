@@ -8,8 +8,8 @@
 </head>
 <body style="background-color: black">
 
-<button id = "test_button" onclick="button()">123</button>
-<p id="demo" style="color: white">""</p>
+<!--<button id = "test_button" onclick="button()">123</button>-->
+<!--<p id="demo" style="color: white">""</p>-->
 
 <!--    页眉设置-->
     <h2 id="header">欢迎我亲爱的无产阶级工人同志</h2>
@@ -18,19 +18,8 @@
 
     <div id="module_one">
         <p id="module1_sign">点击这里切换歌曲</p>
-        <div id="song_links">
-            <ul>
-                <li><a href="../开工/music/周杰伦%20-%20花海.mp3">花海-周杰伦</a></li>
-                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
-                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
-                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
-                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
-                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
-                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
-                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
-                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
-                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
-                <li><a href="https://www.baidu.com">花海-周杰伦</a></li>
+        <div>
+            <ul id="song_list" >
 
             </ul>
         </div>
@@ -40,11 +29,10 @@
     <div id="module_two">
         <div id="player">
             <audio id="audio" controls preload="auto" style="display: none" ontimeupdate="nowtime(this)" >
-                <source src="music/周杰伦 - 花海.mp3" id="music_src">
             </audio>
 
             <img src="player_image/图层%20背景.png" id="image_background">
-            <img src="music_picture/花海-周杰伦.jpg" id="image_music">
+            <img id="image_music" >
 
         </div>
 
@@ -59,11 +47,11 @@
             <div id="botton_bottom">
                 <img src="player_image/repeat.png" class="botton_bottom" id="repeat" onclick="repeat()">
                 <img src="player_image/volume-up.png" class="botton_bottom" onclick="volume()" id="volume">
-                <a href="https://www.bilibili.com/video/BV1Gq4y1s7rK?from=search&seid=1519251411561099364&spm_id_from=333.337.0.0" target="_blank"><img src="player_image/link.png" id="link"></a>
+                <a id="music_link" target="_blank"><img src="player_image/link.png" id="link"></a>
                 <img src="player_image/love.png" class="botton_bottom" onclick="love_button()" id="love_button">
             </div>
             <div style="height: 80px;">
-                <p id="player_song_name">当前播放：花海-周杰伦</p>
+                <p id="player_song_name"></p>
             </div>
         </div>
 
@@ -82,7 +70,7 @@
 </div>
 
     <div id="module_three">
-        <div id="module3_sign">花海-周杰伦</div>
+        <div id="module3_sign"></div>
         <div id="song_words">
             <p>这是一段文字</p>
             <p>这是一段文字</p>
