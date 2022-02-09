@@ -40,7 +40,95 @@ window.onload = function() {
     // 加载歌曲列表
     song_list = document.getElementById("song_list")
     load_songlist()
+
+
+    //进度条
+    playerline = document.getElementById("player_line")
+    playhead = document.getElementById("playhead")
+    played = document.getElementById("played")
+    tooltip = document.getElementById("tooltip")
+    playerlinewidth = playerline.offsetWidth - playhead.offsetWidth
+    tooltiplinewidth = playerline.offsetWidth - tooltip.offsetWidth
+
+    //此属性用于帮助提示栏拜托bug（可能删）
+    onplayhead = false
+    playhead.onmousemove = function () {
+        onplayhead = true
+    }
 }
+
+    // 设置鼠标点击事件
+    function playerline_mousedown (event) {
+        // 设置按钮的左边距长度
+        let offsetx = event.offsetX
+        if (offsetx < 0){
+            offsetx = 0
+        }else if (offsetx >= playerlinewidth){
+            offsetx = playerlinewidth
+        }
+        playhead.style.marginLeft = offsetx + "px"
+        // 设置已进行进度条
+        played.style.width = ( offsetx + 12 ) + "px"
+        // 更改audio的当前时间属性
+        audio.currentTime = update_parcent(event) * audio.duration
+        play()
+
+        // 设置鼠标移动的反馈
+        // playerline.onmousemove = function (event) {
+        //     let mousemove_position = event.offsetX
+        //     demo.innerHTML = mousemove_position
+        //     let playhead_move = offsetx + mousemove_position
+        //     if ( playhead_move < 0 ){
+        //         playhead_move = 0
+        //     }else if ( playhead_move > playerlinewidth ){
+        //         playhead_move = playerlinewidth
+        //     }
+        //     playhead.style.marginLeft = playhead_move + "px"
+        // }
+        //
+        // playerline.onmouseup = function () {
+        //     playerline.onmousemove = null
+        // }
+    }
+    function tooltipupdate(event) {
+        if (onplayhead){
+            tooltip.style.visibility = "hidden"
+            onplayhead = false
+        }else {
+            tooltip.style.visibility = "visible"
+            // 设置提示栏的左边距长度
+            let tooltip_offsetx = event.offsetX
+            if ( tooltip_offsetx < 0 ){
+                tooltip_offsetx = 0
+            }else if ( tooltip_offsetx >= tooltiplinewidth ){
+                tooltip_offsetx = tooltiplinewidth
+            }
+            // 实时刷新时间
+            tooltip.style.marginLeft = (tooltip_offsetx -10) + "px"
+            // 正式配置时间
+            let displaytime = Math.floor(update_parcent(event) * audio.duration)
+            let displaytime_minute = Math.floor( displaytime / 60 )
+            let displaytime_second =  displaytime % 60
+            if ( displaytime_second < 10 ){
+                displaytime_second = "0" + displaytime_second
+            }
+            tooltip.innerHTML = displaytime_minute + ":" + displaytime_second
+        }
+    }
+
+    function update_parcent(event) {
+        let parcent = event.offsetX / playerlinewidth
+        if (parcent > 1){
+            parcent = 1
+        }
+        return parcent
+    }
+    function button(){
+        demo.innerHTML = tooltiplinewidth
+
+    }
+
+
     // 这里开始弄数据
     var song_key_list = [ "花海-周杰伦" , "七里香-周杰伦" , "我怀念的-孙燕姿" , "关键词-林俊杰" , "天外来物-薛之谦" ]
     var song_value_list = {
@@ -81,17 +169,16 @@ window.onload = function() {
         }
 
         // 歌曲添加模板
-        // "name" : "" ,
-        // "picture_src" : "music_picture/" ,
-        // "music_src" : "music/" ,
-        // "songword_src" : "music/" ,
-        // "link" : ""
+       // "" : {
+       //     "name" : "" ,
+       //     "picture_src" : "music_picture/" ,
+       //     "music_src" : "music/" ,
+       //     "songword_src" : "music/" ,
+       //     "link" : ""
+       // }
     }
 
-    function button(){
-        demo.innerHTML =  document.getElementById("link").href = song_value_list[ song_key_list[nowsong_index] ]["link"]
 
-    }
     //进入先加载歌单列表
     function load_songlist() {
         let song_index
@@ -243,3 +330,6 @@ window.onload = function() {
         // 图片自转重置
         // image_music.style = "transform: rotate( 0deg );"
     }
+
+
+

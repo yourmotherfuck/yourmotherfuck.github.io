@@ -79,13 +79,13 @@ h2#header{
     width: 100%;
     max-width: 800px;
     height: 480px;
-    background-color:#EEA2A4 ;
+    background-color:#EEA2A4;
 
     margin-top: 20px;
     margin-right: 0;
     border-radius: 30px;
 
-    border: 1px solid red;
+    border: 1px solid black;
 }
 
 #player{
@@ -180,20 +180,17 @@ h2#header{
 }
 
 #player_line_box{
-    width: 700px;
-    height: 80px;
-    margin-top: 390px;
-    margin-left: 45px;
-    padding-left: 30px;
-
-
+    position: absolute;
+    top: 630px;
+    left: 120px;
 }
+
 #player_line{
     width: 600px;
     height: 25px;
     background-color: rgba(0,0,0,0.4);
-    border-radius: 30px;
-    border: 1px solid red;
+    border-radius: 35px;
+    cursor: pointer;
 }
 #playhead{
     width: 23px;
@@ -203,6 +200,28 @@ h2#header{
     border-radius: 50%;
     background-color: rgba(0,0,0,1);
 }
+#playhead:hover{
+    box-shadow: 0 0 10px darkgrey;
+}
+#tooltip{
+    text-align: center;
+    background-color: snow;
+    width: 40px;
+    margin-top: -48px;
+    margin-left: -10px;
+    visibility: hidden;
+}
+#played{
+    background-color: rgba(0,0,0,0.6);
+    border-radius: 35px 0 0 35px;
+    width: 0px;
+    height: 25px;
+    position: absolute;
+
+}
+#player_line:hover #tooltip{
+    visibility: visible;
+}
 #now_time{
     float: left;
     margin-left: 10px;
@@ -210,10 +229,6 @@ h2#header{
 #total_time{
     float: right;
 }
-
-
-
-
 
 
 

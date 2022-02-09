@@ -8,8 +8,8 @@
 </head>
 <body style="background-color: black">
 
-<!--<button id = "test_button" onclick="button()">123</button>-->
-<!--<p id="demo" style="color: white">""</p>-->
+<button id = "test_button" onclick="button()">123</button>
+<p id="demo" style="color: white">""</p>
 
 <!--    页眉设置-->
     <h2 id="header">欢迎我亲爱的无产阶级工人同志</h2>
@@ -27,6 +27,7 @@
 
 
     <div id="module_two">
+
         <div id="player">
             <audio id="audio" controls preload="auto" style="display: none" ontimeupdate="nowtime(this)" >
             </audio>
@@ -38,7 +39,7 @@
 
         <div id="all_botton">
             <div id="botton_top">
-                <img src="player_image/previous.png" id="previous" onclick="previous()" alt="这是">
+                <img src="player_image/previous.png" id="previous" onclick="previous()">
 <!--                <button style="visibility: hidden" id="pause_play"><img src="player_image/play.png" style="visibility: visible;width: 140px;height: 170px;"></button>-->
                 <img src="player_image/pause.png" id="pause_play" onclick="main_button()">
                 <img src="player_image/next.png" id="next" onclick="next()">
@@ -55,16 +56,21 @@
             </div>
         </div>
 
+
         <div id="player_line_box">
 
-            <div id="player_line">
-                <div id="playhead"></div>
+            <div id="player_line" onmousedown="playerline_mousedown(event)" onmousemove="tooltipupdate(event)">
+                <div id="played" ></div>
+                <div id="playhead" ></div>
+                <div id="tooltip">0:00</div>
             </div>
+
             <div style="width: 590px;height: 25px;margin-top: 5px">
-                <p id="now_time">0:00</p>
+                <p id="now_time" >0:00</p>
                 <p id="total_time"></p>
             </div>
         </div>
+
     </div>
 
 </div>
