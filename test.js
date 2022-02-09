@@ -49,6 +49,8 @@ window.onload = function() {
     tooltip = document.getElementById("tooltip")
     playerlinewidth = playerline.offsetWidth - playhead.offsetWidth
     tooltiplinewidth = playerline.offsetWidth - tooltip.offsetWidth
+    // 这个是每秒更新一次进度条用的
+    last_time = 0
 
     //此属性用于帮助提示栏拜托bug（可能删）
     onplayhead = false
@@ -90,6 +92,99 @@ window.onload = function() {
         //     playerline.onmousemove = null
         // }
     }
+// 这里开始弄数据
+var song_key_list = [ "花海-周杰伦" , "七里香-周杰伦" , "我怀念的-孙燕姿" , "关键词-林俊杰" , "天外来物-薛之谦", "山河无恙在我胸", "兰亭序-周杰伦", "想变得可爱-雨宮天", "也罢-鲁向卉" ]
+var song_value_list = {
+    "花海-周杰伦" : {
+        "name" : "花海-周杰伦" ,
+        "picture_src" : "music_picture/花海-周杰伦.jpg"  ,
+        "music_src" : "music/周杰伦 - 花海.mp3"  ,
+        "songword_src" : "",
+        "link" : "https://www.bilibili.com/video/BV1iJ411e7ZH?from=search&seid=139711800084340431&spm_id_from=333.337.0.0"
+    },
+    "七里香-周杰伦" : {
+        "name" : "七里香-周杰伦" ,
+        "picture_src" : "music_picture/七里香-周杰伦.jpg" ,
+        "music_src" : "music/周杰伦 - 七里香.mp3" ,
+        "songword_src" : "",
+        "link" : "https://www.bilibili.com/video/BV1qD4y1U7fs?from=search&seid=839890076452782897&spm_id_from=333.337.0.0"
+    },
+    "我怀念的-孙燕姿" : {
+        "name" : "我怀念的-孙燕姿" ,
+        "picture_src" : "music_picture/逆光-孙燕姿.jpg" ,
+        "music_src" : "music/孙燕姿 - 我怀念的.mp3" ,
+        "songword_src" : "",
+        "link" : "https://www.bilibili.com/video/BV1gZ4y147Z5?from=search&seid=16826540298733889715&spm_id_from=333.337.0.0"
+    },
+    "关键词-林俊杰" : {
+        "name" : "关键词-林俊杰" ,
+        "picture_src" : "music_picture/关键词-林俊杰.png" ,
+        "music_src" : "music/关键词 - 林俊杰.mp3" ,
+        "songword_src" : "music/",
+        "link" : "https://www.bilibili.com/video/BV1Ks41197FY?from=search&seid=18108239941964954963&spm_id_from=333.337.0.0"
+    },
+    "天外来物-薛之谦" : {
+        "name" : "天外来物-薛之谦" ,
+        "picture_src" : "music_picture/天外来物-薛之谦.jpg" ,
+        "music_src" : "music/天外来物 - 薛之谦.mp3" ,
+        "songword_src" : "music/天外来物 - 薛之谦.lrc" ,
+        "link" : "https://www.bilibili.com/video/BV11h411Q7vz?from=search&seid=4404551429510665856&spm_id_from=333.337.0.0"
+    },
+    "山河无恙在我胸" : {
+        "name" : "山河无恙在我胸" ,
+        "picture_src" : "music_picture/山河无恙在我胸-蔡徐坤.佟丽娅.jpg" ,
+        "music_src" : "music/山河无恙在我胸 - 蔡徐坤 _ 佟丽娅.mp3" ,
+        "songword_src" : "music/" ,
+        "link" : "https://www.bilibili.com/video/BV19741127CN?from=search&seid=2646444473762759813&spm_id_from=333.337.0.0"
+    },
+    "兰亭序-周杰伦" : {
+        "name" : "兰亭序-周杰伦" ,
+        "picture_src" : "music_picture/花海-周杰伦.jpg" ,
+        "music_src" : "music/周杰伦 - 兰亭序.mp3" ,
+        "songword_src" : "music/" ,
+        "link" : "https://www.bilibili.com/video/BV1Cv41187pd?from=search&seid=2427474068925716539&spm_id_from=333.337.0.0"
+    },
+    "想变得可爱-雨宮天" : {
+        "name" : "想变得可爱-雨宮天" ,
+        "picture_src" : "music_picture/何度だって、好き。~告白実行委員会~-HoneyWorks.雨宮天 (あまみや そら).jpg" ,
+        "music_src" : "music/可愛くなりたい (想变得可爱) - HoneyWorks _ 雨宮天 (あまみや そら).mp3" ,
+        "songword_src" : "music/" ,
+        "link" : "https://www.bilibili.com/video/BV1gs411K7v6?from=search&seid=9292398766478911187&spm_id_from=333.337.0.0"
+    },
+    "也罢-鲁向卉" : {
+        "name" : "也罢-鲁向卉" ,
+        "picture_src" : "music_picture/也罢-鲁向卉.jpg" ,
+        "music_src" : "music/鲁向卉 - 也罢.mp3" ,
+        "songword_src" : "music/" ,
+        "link" : "https://www.bilibili.com/video/BV1bW411Y7rm?from=search&seid=5434972905564262503&spm_id_from=333.337.0.0"
+    }
+
+    // 歌曲添加模板
+    // "" : {
+    //     "name" : "" ,
+    //     "picture_src" : "music_picture/" ,
+    //     "music_src" : "music/" ,
+    //     "songword_src" : "music/" ,
+    //     "link" : ""
+    // }
+}
+
+
+
+    // 设置时间同步
+    function time_synchrenization(){
+        let time_parcent = audio.currentTime / audio.duration
+        let offsetx = playerlinewidth * time_parcent
+        if (offsetx < 0){
+            offsetx = 0
+        }else if (offsetx >= playerlinewidth){
+            offsetx = playerlinewidth
+        }
+        playhead.style.marginLeft = offsetx + "px"
+        // 设置已进行进度条
+        played.style.width = ( offsetx + 12 ) + "px"
+    }
+    // 设置提示栏
     function tooltipupdate(event) {
         if (onplayhead){
             tooltip.style.visibility = "hidden"
@@ -127,57 +222,6 @@ window.onload = function() {
         demo.innerHTML = tooltiplinewidth
 
     }
-
-
-    // 这里开始弄数据
-    var song_key_list = [ "花海-周杰伦" , "七里香-周杰伦" , "我怀念的-孙燕姿" , "关键词-林俊杰" , "天外来物-薛之谦" ]
-    var song_value_list = {
-        "花海-周杰伦" : {
-            "name" : "花海-周杰伦" ,
-            "picture_src" : "music_picture/花海-周杰伦.jpg"  ,
-            "music_src" : "music/周杰伦 - 花海.mp3"  ,
-            "songword_src" : "",
-            "link" : "https://www.bilibili.com/video/BV1iJ411e7ZH?from=search&seid=139711800084340431&spm_id_from=333.337.0.0"
-        },
-        "七里香-周杰伦" : {
-            "name" : "七里香-周杰伦" ,
-            "picture_src" : "music_picture/七里香-周杰伦.jpg" ,
-            "music_src" : "music/周杰伦 - 七里香.mp3" ,
-            "songword_src" : "",
-            "link" : "https://www.bilibili.com/video/BV1qD4y1U7fs?from=search&seid=839890076452782897&spm_id_from=333.337.0.0"
-        },
-        "我怀念的-孙燕姿" : {
-            "name" : "我怀念的-孙燕姿" ,
-            "picture_src" : "music_picture/逆光-孙燕姿.jpg" ,
-            "music_src" : "music/孙燕姿 - 我怀念的.mp3" ,
-            "songword_src" : "",
-            "link" : "https://www.bilibili.com/video/BV1gZ4y147Z5?from=search&seid=16826540298733889715&spm_id_from=333.337.0.0"
-        },
-        "关键词-林俊杰" : {
-            "name" : "关键词-林俊杰" ,
-            "picture_src" : "music_picture/关键词-林俊杰.png" ,
-            "music_src" : "music/关键词 - 林俊杰.mp3" ,
-            "songword_src" : "music/",
-            "link" : "https://www.bilibili.com/video/BV1Ks41197FY?from=search&seid=18108239941964954963&spm_id_from=333.337.0.0"
-        },
-        "天外来物-薛之谦" : {
-            "name" : "天外来物-薛之谦" ,
-            "picture_src" : "music_picture/天外来物-薛之谦.jpg" ,
-            "music_src" : "music/天外来物 - 薛之谦.mp3" ,
-            "songword_src" : "music/天外来物 - 薛之谦.lrc" ,
-            "link" : "https://www.bilibili.com/video/BV11h411Q7vz?from=search&seid=4404551429510665856&spm_id_from=333.337.0.0"
-        }
-
-        // 歌曲添加模板
-       // "" : {
-       //     "name" : "" ,
-       //     "picture_src" : "music_picture/" ,
-       //     "music_src" : "music/" ,
-       //     "songword_src" : "music/" ,
-       //     "link" : ""
-       // }
-    }
-
 
     //进入先加载歌单列表
     function load_songlist() {
@@ -282,13 +326,17 @@ window.onload = function() {
     function nowtime(event) {
         let now_minute = Math.floor( event.currentTime / 60 )
         let now_second = Math.floor( event.currentTime) % 60
-
-
+        //如果秒数是个位数则在前面加个0
         if ( now_second < 10 ){
             now_second = "0" + now_second
         }
-
         document.getElementById("now_time").innerHTML = now_minute.toString() + ":" + now_second.toString()
+        // 设置进度条同步（每秒一次）
+        if ( Math.floor( event.currentTime) > last_time){
+            time_synchrenization()
+        }
+        last_time = Math.floor( event.currentTime )
+        //歌曲播放下一首
         if ( event.currentTime >= audio.duration ){
             next()
         }
