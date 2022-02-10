@@ -52,46 +52,17 @@ window.onload = function() {
     // 这个是每秒更新一次进度条用的
     last_time = 0
 
-    //此属性用于帮助提示栏拜托bug（可能删）
+    //此属性用于帮助提示栏在悬浮按钮时错误的bug（可能删）
     onplayhead = false
     playhead.onmousemove = function () {
         onplayhead = true
     }
+    // 此用于帮助鼠标脱离进度条后提示栏依然存在的bug
+    document.getElementById("player").onmousemove = function(){ tooltip.style.visibility = "hidden" }
+    document.getElementById("all_botton").onmousemove = function () {tooltip.style.visibility = "hidden"}
 }
 
-    // 设置鼠标点击事件
-    function playerline_mousedown (event) {
-        // 设置按钮的左边距长度
-        let offsetx = event.offsetX
-        if (offsetx < 0){
-            offsetx = 0
-        }else if (offsetx >= playerlinewidth){
-            offsetx = playerlinewidth
-        }
-        playhead.style.marginLeft = offsetx + "px"
-        // 设置已进行进度条
-        played.style.width = ( offsetx + 12 ) + "px"
-        // 更改audio的当前时间属性
-        audio.currentTime = update_parcent(event) * audio.duration
-        play()
 
-        // 设置鼠标移动的反馈
-        // playerline.onmousemove = function (event) {
-        //     let mousemove_position = event.offsetX
-        //     demo.innerHTML = mousemove_position
-        //     let playhead_move = offsetx + mousemove_position
-        //     if ( playhead_move < 0 ){
-        //         playhead_move = 0
-        //     }else if ( playhead_move > playerlinewidth ){
-        //         playhead_move = playerlinewidth
-        //     }
-        //     playhead.style.marginLeft = playhead_move + "px"
-        // }
-        //
-        // playerline.onmouseup = function () {
-        //     playerline.onmousemove = null
-        // }
-    }
 // 这里开始弄数据
 var song_key_list = [ "花海-周杰伦" , "七里香-周杰伦" , "我怀念的-孙燕姿" , "关键词-林俊杰" , "天外来物-薛之谦", "山河无恙在我胸", "兰亭序-周杰伦", "想变得可爱-雨宮天", "也罢-鲁向卉" ]
 var song_value_list = {
@@ -170,6 +141,39 @@ var song_value_list = {
 }
 
 
+    // 设置鼠标点击事件
+    function playerline_mousedown (event) {
+        // 设置按钮的左边距长度
+        let offsetx = event.offsetX
+        if (offsetx < 0){
+            offsetx = 0
+        }else if (offsetx >= playerlinewidth){
+            offsetx = playerlinewidth
+        }
+        playhead.style.marginLeft = offsetx + "px"
+        // 设置已进行进度条
+        played.style.width = ( offsetx + 12 ) + "px"
+        // 更改audio的当前时间属性
+        audio.currentTime = update_parcent(event) * audio.duration
+        play()
+
+        // 设置鼠标移动的反馈
+        // playerline.onmousemove = function (event) {
+        //     let mousemove_position = event.offsetX
+        //     demo.innerHTML = mousemove_position
+        //     let playhead_move = offsetx + mousemove_position
+        //     if ( playhead_move < 0 ){
+        //         playhead_move = 0
+        //     }else if ( playhead_move > playerlinewidth ){
+        //         playhead_move = playerlinewidth
+        //     }
+        //     playhead.style.marginLeft = playhead_move + "px"
+        // }
+        //
+        // playerline.onmouseup = function () {
+        //     playerline.onmousemove = null
+        // }
+    }
 
     // 设置时间同步
     function time_synchrenization(){
