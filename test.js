@@ -1,4 +1,6 @@
 window.onload = function() {
+    // 设置将时间循环精确到一毫秒
+    setInterval(nowtime,1)
     pause_play = document.getElementById("pause_play")
     love_variable = document.getElementById("love_button")
     // 这里用于区分随机和顺序播放
@@ -49,8 +51,8 @@ window.onload = function() {
     tooltip = document.getElementById("tooltip")
     playerlinewidth = playerline.offsetWidth - playhead.offsetWidth
     tooltiplinewidth = playerline.offsetWidth - tooltip.offsetWidth
-    // 这个是每秒更新一次进度条用的
-    last_time = 0
+    // 这个是每秒更新一次进度条用的       （暂时抛弃此设定）
+    // last_time = 0
 
     //此属性用于帮助提示栏在悬浮按钮时错误的bug（可能删）
     onplayhead = false
@@ -60,17 +62,21 @@ window.onload = function() {
     // 此用于帮助鼠标脱离进度条后提示栏依然存在的bug
     document.getElementById("player").onmousemove = function(){ tooltip.style.visibility = "hidden" }
     document.getElementById("all_botton").onmousemove = function () {tooltip.style.visibility = "hidden"}
+
+
+
 }
 
 
 // 这里开始弄数据
-var song_key_list = [ "花海-周杰伦" , "七里香-周杰伦" , "我怀念的-孙燕姿" , "关键词-林俊杰" , "天外来物-薛之谦", "山河无恙在我胸", "兰亭序-周杰伦", "想变得可爱-雨宮天", "也罢-鲁向卉" ]
+var song_key_list = [ "花海-周杰伦" , "七里香-周杰伦" , "我怀念的-孙燕姿" , "关键词-林俊杰" , "天外来物-薛之谦", "山河无恙在我胸", "兰亭序-周杰伦", "想变得可爱-雨宮天", "也罢-鲁向卉",
+"那些年-胡夏","背对背拥抱-林俊杰"]
 var song_value_list = {
     "花海-周杰伦" : {
         "name" : "花海-周杰伦" ,
         "picture_src" : "music_picture/花海-周杰伦.jpg"  ,
         "music_src" : "music/周杰伦 - 花海.mp3"  ,
-        "songword_src" : "",
+        "songword_src" : "music/花海.lrc",
         "link" : "https://www.bilibili.com/video/BV1iJ411e7ZH?from=search&seid=139711800084340431&spm_id_from=333.337.0.0"
     },
     "七里香-周杰伦" : {
@@ -120,7 +126,8 @@ var song_value_list = {
         "picture_src" : "music_picture/何度だって、好き。~告白実行委員会~-HoneyWorks.雨宮天 (あまみや そら).jpg" ,
         "music_src" : "music/可愛くなりたい (想变得可爱) - HoneyWorks _ 雨宮天 (あまみや そら).mp3" ,
         "songword_src" : "music/" ,
-        "link" : "https://www.bilibili.com/video/BV1gs411K7v6?from=search&seid=9292398766478911187&spm_id_from=333.337.0.0"
+        "link" : "https://www.bilibili.com/video/BV1gs411K7v6?from=search&seid=9292398766478911187&spm_id_from=333.337.0.0",
+        "istranslate" : "true"
     },
     "也罢-鲁向卉" : {
         "name" : "也罢-鲁向卉" ,
@@ -128,6 +135,20 @@ var song_value_list = {
         "music_src" : "music/鲁向卉 - 也罢.mp3" ,
         "songword_src" : "music/" ,
         "link" : "https://www.bilibili.com/video/BV1bW411Y7rm?from=search&seid=5434972905564262503&spm_id_from=333.337.0.0"
+    },
+    "那些年-胡夏" : {
+        "name" : "那些年-胡夏" ,
+        "picture_src" : "music_picture/那些年，我们一起追的女孩 电影原声带-胡夏.jpg" ,
+        "music_src" : "music/那些年 - 胡夏.mp3" ,
+        "songword_src" : "music/" ,
+        "link" : "https://www.bilibili.com/video/BV1Pf4y1R7xh?from=search&seid=12918411834881948122&spm_id_from=333.337.0.0"
+    },
+    "背对背拥抱-林俊杰" : {
+        "name" : "背对背拥抱-林俊杰" ,
+        "picture_src" : "music_picture/100天-林俊杰.jpg" ,
+        "music_src" : "music/林俊杰 - 背对背拥抱.ogg" ,
+        "songword_src" : "music/" ,
+        "link" : "https://www.bilibili.com/video/BV1mg4y1v7ee?from=search&seid=16464845775291582879&spm_id_from=333.337.0.0"
     }
 
     // 歌曲添加模板
@@ -143,36 +164,38 @@ var song_value_list = {
 
     // 设置鼠标点击事件
     function playerline_mousedown (event) {
-        // 设置按钮的左边距长度
-        let offsetx = event.offsetX
-        if (offsetx < 0){
-            offsetx = 0
-        }else if (offsetx >= playerlinewidth){
-            offsetx = playerlinewidth
-        }
-        playhead.style.marginLeft = offsetx + "px"
-        // 设置已进行进度条
-        played.style.width = ( offsetx + 12 ) + "px"
-        // 更改audio的当前时间属性
-        audio.currentTime = update_parcent(event) * audio.duration
-        play()
+        if (event.button===0){
+            // 设置按钮的左边距长度
+            let offsetx = event.offsetX
+            if (offsetx < 0){
+                offsetx = 0
+            }else if (offsetx >= playerlinewidth){
+                offsetx = playerlinewidth
+            }
+            playhead.style.marginLeft = offsetx + "px"
+            // 设置已进行进度条
+            played.style.width = ( offsetx + 12 ) + "px"
+            // 更改audio的当前时间属性
+            audio.currentTime = update_parcent(event) * audio.duration
+            play()
 
-        // 设置鼠标移动的反馈
-        // playerline.onmousemove = function (event) {
-        //     let mousemove_position = event.offsetX
-        //     demo.innerHTML = mousemove_position
-        //     let playhead_move = offsetx + mousemove_position
-        //     if ( playhead_move < 0 ){
-        //         playhead_move = 0
-        //     }else if ( playhead_move > playerlinewidth ){
-        //         playhead_move = playerlinewidth
-        //     }
-        //     playhead.style.marginLeft = playhead_move + "px"
-        // }
-        //
-        // playerline.onmouseup = function () {
-        //     playerline.onmousemove = null
-        // }
+            // 设置鼠标移动的反馈
+            // playerline.onmousemove = function (event) {
+            //     let mousemove_position = event.offsetX
+            //     demo.innerHTML = mousemove_position
+            //     let playhead_move = offsetx + mousemove_position
+            //     if ( playhead_move < 0 ){
+            //         playhead_move = 0
+            //     }else if ( playhead_move > playerlinewidth ){
+            //         playhead_move = playerlinewidth
+            //     }
+            //     playhead.style.marginLeft = playhead_move + "px"
+            // }
+            //
+            // playerline.onmouseup = function () {
+            //     playerline.onmousemove = null
+            // }
+        }
     }
 
     // 设置时间同步
@@ -327,21 +350,22 @@ var song_value_list = {
         }
     }
     // 当前时间加上总时长
-    function nowtime(event) {
-        let now_minute = Math.floor( event.currentTime / 60 )
-        let now_second = Math.floor( event.currentTime) % 60
+    function nowtime() {
+        now_minute = Math.floor( audio.currentTime / 60 )
+        now_second = Math.floor( audio.currentTime) % 60
         //如果秒数是个位数则在前面加个0
         if ( now_second < 10 ){
             now_second = "0" + now_second
         }
         document.getElementById("now_time").innerHTML = now_minute.toString() + ":" + now_second.toString()
-        // 设置进度条同步（每秒一次）
-        if ( Math.floor( event.currentTime) > last_time){
-            time_synchrenization()
-        }
-        last_time = Math.floor( event.currentTime )
+        // 设置进度条同步（每秒一次）(现在每毫秒刷新一次)
+        time_synchrenization()
+        // if ( Math.floor( audio.currentTime) > last_time){
+        //     time_synchrenization()
+        // }
+        // last_time = Math.floor( audio.currentTime )          （暂时不需要）
         //歌曲播放下一首
-        if ( event.currentTime >= audio.duration ){
+        if ( audio.currentTime >= audio.duration ){
             next()
         }
     }
@@ -367,7 +391,7 @@ var song_value_list = {
         audio.src = song_value_list[song_key_list[nowsong_index]]["music_src"]
         player_song_name.innerHTML = "当前播放：" + song_value_list[song_key_list[nowsong_index]]["name"]
         module3_sign.innerHTML = song_value_list[song_key_list[nowsong_index]]["name"]
-        // 留一行给歌词文件
+        song_words_src = song_value_list[song_key_list[nowsong_index]]["songword_src"]
         document.getElementById("music_link").href = song_value_list[ song_key_list[nowsong_index] ]["link"]
         audio.load()
         totaltime()
@@ -381,6 +405,39 @@ var song_value_list = {
         }
         // 图片自转重置
         // image_music.style = "transform: rotate( 0deg );"
+
+        // 歌词设置
+        song_words = document.getElementById("song_words")
+        xmlhttplyric = new XMLHttpRequest()
+        xmlhttplyric.onreadystatechange = function(){
+            if ( xmlhttplyric.readyState === 4 && xmlhttplyric.status === 200 ){
+                //这里读取文件并设置总行数为line_count
+                let line_count = xmlhttplyric.responseText.split("\n")
+                for ( line = 0;line < line_count.length;line++ ){
+                    thisline_time = line_count[line].match(/[0-9][0-9]:[0-9][0-9].[0-9][0-9]/g)
+                    thisline_word = line_count[line].replace(/\[[0-9][0-9]:[0-9][0-9].[0-9][0-9]\]/g,"")
+                    //在填词之前把标点符号和空格过滤一遍
+                    let thisline_wordofarray = []
+                    regex = /[\u4e00-\u9fa5\u0800-\u4e00A-Za-z0-9]/
+                    for ( let i=0;i<thisline_word.length;i++ ){
+                        if ( ! regex.test( thisline_word[i+1] ) && i !== thisline_word.length -1 ){
+                            thisline_wordofarray.push( thisline_word[i] + thisline_word[Number(i)+1] )
+
+                        }else if ( ! regex.test( thisline_word[i] ) ){
+
+                        }else {
+                            thisline_wordofarray.push( thisline_word[i] )
+                        }
+
+                    }
+                    song_words.innerHTML += thisline_wordofarray
+                }
+            }
+        }
+
+        xmlhttplyric.open("get",song_words_src,true)
+        xmlhttplyric.send()
+
     }
 
 

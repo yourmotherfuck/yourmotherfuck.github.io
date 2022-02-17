@@ -256,7 +256,8 @@ h2#header{
 #song_words{
     width: 103%;
     height: 80%;
-
+    /*#FF414D*/
+    color: linear-gradient(to right,#FF414D 0%,white 0%);
     font-size: 25px;
     line-height: 40px;
     letter-spacing: 8px;
