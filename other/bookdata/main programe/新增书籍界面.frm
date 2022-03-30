@@ -298,7 +298,7 @@ If Trim(Combo1.Text) = "ÕâÀïÊäÈëA¶ÎµÄ×¨Òµ" And Trim(Combo2.Text) = "ÕâÀïÊäÈëB¶Îµ
 If Trim(Text1(3)) = empy Then MsgBox "ÇëÊäÈë³ö°æÉçĞÅÏ¢", 48, "´íÎó": Exit Sub: Text1(3).SetFocus
 If Trim(Text1(4)) = empy Then Text1(4) = Date
 If Trim(Text1(5)) = empy Then MsgBox "ÇëÊäÈë¿â´æ", 48, "´íÎó": Exit Sub: Text1(5).SetFocus
-If Format(Trim(Text1(4)), "yyyy/m/d") <> Trim(Text1(4)) Then MsgBox "ÇëÊäÈëÕıÈ·µÄÊ±¼ä¸ñÊ½,eg:2022/3/22": Exit Sub
+If IsDate(Trim(Text1(4))) = False Then MsgBox "ÇëÊäÈëÕıÈ·µÄÊ±¼ä¸ñÊ½,eg:2022/3/22": Exit Sub
 
 'ÒòÎªcombolbox¿Ø¼şÓĞÁ½¸öËùÒÔÉèÖÃ±äÁ¿À´Æ½ºâ
 Dim vocation As String
@@ -346,14 +346,14 @@ MsgBox "Ìí¼Ó³É¹¦£¬Äã¼ÓÈëµÄÄÚÈİÎª£º" & Chr(13) & "ÊéºÅ£º" & Text1(0) & Space(5) &
 Unload Me
 Ö÷½çÃæ¼Ó²éÕÒ½çÃæ.Enabled = True
 Ö÷½çÃæ¼Ó²éÕÒ½çÃæ.Show
-Ö÷½çÃæ¼Ó²éÕÒ½çÃæ.maindata_load (" select * from  Êé¿âÏµÍ³ order by " & Trim(Ö÷½çÃæ¼Ó²éÕÒ½çÃæ.Text2) & " desc ")
+Ö÷½çÃæ¼Ó²éÕÒ½çÃæ.maindata_load " select * from  Êé¿âÏµÍ³ order by " & Trim(Ö÷½çÃæ¼Ó²éÕÒ½çÃæ.Combo2.Text), True
 End Sub
 
 Private Sub Command2_Click()
 Unload Me
 Ö÷½çÃæ¼Ó²éÕÒ½çÃæ.Enabled = True
 Ö÷½çÃæ¼Ó²éÕÒ½çÃæ.Show
-Ö÷½çÃæ¼Ó²éÕÒ½çÃæ.maindata_load (" select * from  Êé¿âÏµÍ³ order by " & Trim(Ö÷½çÃæ¼Ó²éÕÒ½çÃæ.Text2) & " desc ")
+'Ö÷½çÃæ¼Ó²éÕÒ½çÃæ.maindata_load (" select * from  Êé¿âÏµÍ³ order by " & Trim(Ö÷½çÃæ¼Ó²éÕÒ½çÃæ.Combo2.Text) & " desc ")
 End Sub
 
 Private Sub Form_Click()
@@ -364,5 +364,5 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     Cancel = 0
     Ö÷½çÃæ¼Ó²éÕÒ½çÃæ.Enabled = True
     Ö÷½çÃæ¼Ó²éÕÒ½çÃæ.Show
-    Ö÷½çÃæ¼Ó²éÕÒ½çÃæ.maindata_load (" select * from  Êé¿âÏµÍ³ order by " & Trim(Ö÷½çÃæ¼Ó²éÕÒ½çÃæ.Text2) & " desc ")
+    'Ö÷½çÃæ¼Ó²éÕÒ½çÃæ.maindata_load (" select * from  Êé¿âÏµÍ³ order by " & Trim(Ö÷½çÃæ¼Ó²éÕÒ½çÃæ.Combo2.Text) & " desc ")
 End Sub

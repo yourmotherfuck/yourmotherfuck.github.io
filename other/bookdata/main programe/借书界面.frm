@@ -1,13 +1,13 @@
 VERSION 5.00
 Begin VB.Form 借书界面 
    Caption         =   "借书界面"
-   ClientHeight    =   6810
+   ClientHeight    =   6240
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   11325
+   ClientWidth     =   9600
    LinkTopic       =   "Form1"
-   ScaleHeight     =   6810
-   ScaleWidth      =   11325
+   ScaleHeight     =   6240
+   ScaleWidth      =   9600
    StartUpPosition =   3  '窗口缺省
    Begin VB.CommandButton Command2 
       Caption         =   "取消"
@@ -128,23 +128,6 @@ Begin VB.Form 借书界面
       Top             =   720
       Width           =   2655
    End
-   Begin VB.Label Label2 
-      Caption         =   "2022/3/22这样的格式"
-      BeginProperty Font 
-         Name            =   "宋体"
-         Size            =   10.5
-         Charset         =   134
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   6000
-      TabIndex        =   12
-      Top             =   3120
-      Width           =   2055
-   End
    Begin VB.Label Label1 
       Caption         =   "输入借书数量："
       BeginProperty Font 
@@ -251,8 +234,7 @@ If Trim(Text1(1)) = empy Then MsgBox "请输入书名", 48, "注意": Exit Sub
 If Trim(Text1(2)) = empy Then MsgBox "请输入借书人（单位）", 48, "注意": Exit Sub
 If Trim(Text1(3)) = empy Then Text1(3) = Date
 If Trim(Text1(4)) = empy Then MsgBox "请输入借书数量", 48, "注意": Exit Sub
-If Format(Trim(Text1(3)), "yyyy/m/d") <> Trim(Text1(3)) Then MsgBox "请输入正确的时间格式,eg:2022/3/22": Exit Sub
-
+If IsDate(Trim(Text1(3))) = False Then MsgBox "请输入正确的时间格式,eg:2022/3/22": Exit Sub
 
 '排错机制（要确定书库里有这样对应的书号和书名）
 Dim rs As New ADODB.Recordset
@@ -266,6 +248,11 @@ rs.Close
 '这里开始同步更改数据
 sql = "select * from 书库系统 where 书号 =  " & "'" & Trim(Text1(0)) & "'"
 rs.Open sql, 主界面加查找界面.conn, 1, 3
+    '先拿到下文需要的书籍信息变更表的专业和变更前的数据
+    Dim vocation As String, value_before As String
+    vocation = rs.Fields("专业").Value
+    value_before = rs.Fields("库存").Value
+    
     reserve = rs.Fields("库存").Value - Val(Trim(Text1(4)))
     If reserve < 0 Then MsgBox "借书数量不能大于库存", 48, "警告": Exit Sub
     rs.Fields("库存") = reserve
@@ -284,21 +271,36 @@ rs.Open "借书记录表", 主界面加查找界面.conn, 1, 3
     rs.Update
 rs.Close
 
+'同时在书籍信息变更表里面加入对应的东西
+temp = "借" + Trim(Text1(4)) + "本书"
+rs.Open "书籍信息变更记录表", 主界面加查找界面.conn, 1, 3
+    rs.AddNew
+    rs.Fields("书号") = Trim(Text1(0))
+    rs.Fields("书名") = Trim(Text1(1))
+    rs.Fields("专业") = vocation
+    rs.Fields("更改时间") = Trim(Text1(3))
+    rs.Fields("更改的类型") = "借书"
+    rs.Fields("变更的数据") = temp
+    rs.Fields("更改前") = value_before
+    rs.Fields("更改后") = reserve
+    rs.Update
+rs.Close
 
-MsgBox "添加成功，添加内容为：" & Chr(13) & "书籍号：" & Trim(Text1(0)) & Space(5) & "书名：" & Trim(Text1(1)) & Space(5) & "借书人（单位）：" & Trim(Text1(2)) & Chr(13) & "借书时间：" & Trim(Text1(3)) & Space(5) & "借书数量：" & Trim(Text1(4)), , "通过"
+
+MsgBox "借书成功，借书内容为：" & Chr(13) & "书籍号：" & Trim(Text1(0)) & Space(5) & "书名：" & Trim(Text1(1)) & Space(5) & "借书人（单位）：" & Trim(Text1(2)) & Chr(13) & "借书时间：" & Trim(Text1(3)) & Space(5) & "借书数量：" & Trim(Text1(4)), , "通过"
 
 '完成后回到主界面
 Unload Me
 主界面加查找界面.Enabled = True
 主界面加查找界面.Show
-主界面加查找界面.maindata_load (" select * from  书库系统 order by " & Trim(主界面加查找界面.Text2) & " desc ")
+主界面加查找界面.maindata_load " select * from  书库系统 order by " & Trim(主界面加查找界面.Combo2.Text), True
 End Sub
 
 Private Sub Command2_Click()
 Unload Me
 主界面加查找界面.Enabled = True
 主界面加查找界面.Show
-主界面加查找界面.maindata_load (" select * from  书库系统 order by " & Trim(主界面加查找界面.Text2) & " desc ")
+'主界面加查找界面.maindata_load (" select * from  书库系统 order by " & Trim(主界面加查找界面.Combo2.Text) & " desc ")
 End Sub
 
 Private Sub Form_Load()
@@ -309,5 +311,5 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     Cancel = 0
     主界面加查找界面.Enabled = True
     主界面加查找界面.Show
-    主界面加查找界面.maindata_load (" select * from  书库系统 order by " & Trim(主界面加查找界面.Text2) & " desc ")
+    '主界面加查找界面.maindata_load (" select * from  书库系统 order by " & Trim(主界面加查找界面.Combo2.Text) & " desc ")
 End Sub
